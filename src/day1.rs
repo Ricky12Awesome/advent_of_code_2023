@@ -48,8 +48,8 @@ fn named_to_n(line: &str) -> String {
   buf
 }
 
-impl Day for Day1 {
-  fn setup(input: &str) -> Self {
+impl <'a> Day<'a> for Day1 {
+  fn setup(input: &'a str) -> Self {
     Day1(input.into())
   }
 

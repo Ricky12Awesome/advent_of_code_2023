@@ -1,7 +1,9 @@
 mod day1;
+mod day2;
 
 use crate::day1::Day1;
 use clap::Parser;
+use crate::day2::Day2;
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
@@ -19,8 +21,8 @@ pub struct Args {
   input: Option<String>,
 }
 
-pub trait Day {
-  fn setup(input: &str) -> Self;
+pub trait Day<'a> {
+  fn setup(input: &'a str) -> Self;
 
   fn part1(&mut self) -> String;
   fn part2(&mut self) -> String;
@@ -29,9 +31,10 @@ pub trait Day {
 pub const DEFAULT_INPUTS: &[&str] = &[
   "", // Day 0, just so I don't have to do -1 when indexing
   include_str!("../inputs/1.txt"),
+  include_str!("../inputs/2.txt"),
 ];
 
-pub fn run_day<D: Day>(input: &str, day_n: u32, part: u32) -> anyhow::Result<()> {
+pub fn run_day<'a, D: Day<'a>>(input: &'a str, day_n: u32, part: u32) -> anyhow::Result<()> {
   let mut day = D::setup(input);
 
   match part {
@@ -60,6 +63,7 @@ pub fn main() -> anyhow::Result<()> {
 
   match args.day {
     1 => run_day::<Day1>(input, args.day, args.part),
+    2 => run_day::<Day2>(input, args.day, args.part),
     _ => Err(anyhow::Error::msg("Invalid Day")),
   }
 }
