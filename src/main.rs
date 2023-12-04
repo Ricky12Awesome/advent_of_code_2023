@@ -1,13 +1,16 @@
 #![feature(exact_size_is_empty)]
+#![allow(unused)]
 
 mod day1;
 mod day2;
 mod day3;
+mod day4;
 
 use crate::day1::Day1;
 use clap::Parser;
 use crate::day2::Day2;
 use crate::day3::Day3;
+use crate::day4::Day4;
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
@@ -38,7 +41,7 @@ pub const DEFAULT_INPUTS: &[&str] = &[
   include_str!("../inputs/1.txt"),
   include_str!("../inputs/2.txt"),
   include_str!("../inputs/3.txt"),
-  // include_str!("../inputs/4.txt"),
+  include_str!("../inputs/4.txt"),
   // include_str!("../inputs/5.txt"),
   // include_str!("../inputs/6.txt"),
   // include_str!("../inputs/7.txt"),
@@ -93,12 +96,12 @@ pub fn main() -> anyhow::Result<()> {
     1 => run_day::<Day1>(input, args.day, args.part),
     2 => run_day::<Day2>(input, args.day, args.part),
     3 => run_day::<Day3>(input, args.day, args.part),
-    // 4 => run_day::<Day4 >(input, args.day, args.part),
-    // 5 => run_day::<Day5 >(input, args.day, args.part),
-    // 6 => run_day::<Day6 >(input, args.day, args.part),
-    // 7 => run_day::<Day7 >(input, args.day, args.part),
-    // 8 => run_day::<Day8 >(input, args.day, args.part),
-    // 9 => run_day::<Day9 >(input, args.day, args.part),
+    4 => run_day::<Day4>(input, args.day, args.part),
+    // 5 => run_day::<Day5>(input, args.day, args.part),
+    // 6 => run_day::<Day6>(input, args.day, args.part),
+    // 7 => run_day::<Day7>(input, args.day, args.part),
+    // 8 => run_day::<Day8>(input, args.day, args.part),
+    // 9 => run_day::<Day9>(input, args.day, args.part),
     // 10 => run_day::<Day10>(input, args.day, args.part),
     // 11 => run_day::<Day11>(input, args.day, args.part),
     // 12 => run_day::<Day12>(input, args.day, args.part),
