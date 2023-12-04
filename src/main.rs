@@ -7,10 +7,11 @@ mod day3;
 mod day4;
 
 use crate::day1::Day1;
-use clap::Parser;
 use crate::day2::Day2;
 use crate::day3::Day3;
 use crate::day4::Day4;
+use clap::Parser;
+use std::time::Duration;
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
@@ -27,6 +28,14 @@ pub struct Args {
   /// Override input with custom input
   #[arg(short, long)]
   input: Option<String>,
+
+  /// Benchmark
+  #[arg(short, long)]
+  bench: bool,
+
+  /// Benchmark time in ms
+  #[arg(short, long, default_value_t = 2000)]
+  time: u64,
 }
 
 pub trait Day<'a> {
@@ -65,19 +74,76 @@ pub const DEFAULT_INPUTS: &[&str] = &[
   // include_str!("../inputs/25.txt"),
 ];
 
-pub fn run_day<'a, D: Day<'a>>(input: &'a str, day_n: u32, part: u32) -> anyhow::Result<()> {
-  let mut day = D::setup(input);
-
-  match part {
+pub fn run_benchmark<'a, D: Day<'a>>(input: &'a str, args: &Args) -> anyhow::Result<()> {
+  match args.part {
     0 => {
-      println!("Day {} Part 1: {}", day_n, day.part1());
-      println!("Day {} Part 2: {}", day_n, day.part2());
+      let result =
+        benchmarking::bench_function_with_duration(Duration::from_millis(args.time), |m| {
+          m.measure(|| {
+            let mut d = D::setup(input);
+
+            d.part1();
+            d.part2()
+          });
+        })?;
+
+      println!(
+        "[Benchmark] Day {} Part 1 & 2: {:?}",
+        args.day,
+        result.elapsed()
+      );
     }
     1 => {
-      println!("Day {} Part 1: {}", day_n, day.part1());
+      let result =
+        benchmarking::bench_function_with_duration(Duration::from_millis(args.time), |m| {
+          m.measure(|| {
+            D::setup(input).part1();
+          });
+        })?;
+
+      println!(
+        "[Benchmark] Day {} Part 1: {:?}",
+        args.day,
+        result.elapsed()
+      );
     }
     2 => {
-      println!("Day {} Part 2: {}", day_n, day.part2());
+      let result =
+        benchmarking::bench_function_with_duration(Duration::from_millis(args.time), |m| {
+          m.measure(|| {
+            D::setup(input).part2();
+          });
+        })?;
+
+      println!(
+        "[Benchmark] Day {} Part 2: {:?}",
+        args.day,
+        result.elapsed()
+      );
+    }
+    _ => return Err(anyhow::Error::msg("Invalid Part")),
+  }
+
+  Ok(())
+}
+
+pub fn run_day<'a, D: Day<'a>>(input: &'a str, args: &Args) -> anyhow::Result<()> {
+  if args.bench {
+    return run_benchmark::<D>(input, args);
+  }
+
+  let mut day = D::setup(input);
+
+  match args.part {
+    0 => {
+      println!("Day {} Part 1: {}", args.day, day.part1());
+      println!("Day {} Part 2: {}", args.day, day.part2());
+    }
+    1 => {
+      println!("Day {} Part 1: {}", args.day, day.part1());
+    }
+    2 => {
+      println!("Day {} Part 2: {}", args.day, day.part2());
     }
     _ => return Err(anyhow::Error::msg("Invalid Part")),
   }
@@ -93,31 +159,31 @@ pub fn main() -> anyhow::Result<()> {
     .unwrap_or_else(|| DEFAULT_INPUTS[args.day as usize]);
 
   match args.day {
-    1 => run_day::<Day1>(input, args.day, args.part),
-    2 => run_day::<Day2>(input, args.day, args.part),
-    3 => run_day::<Day3>(input, args.day, args.part),
-    4 => run_day::<Day4>(input, args.day, args.part),
-    // 5 => run_day::<Day5>(input, args.day, args.part),
-    // 6 => run_day::<Day6>(input, args.day, args.part),
-    // 7 => run_day::<Day7>(input, args.day, args.part),
-    // 8 => run_day::<Day8>(input, args.day, args.part),
-    // 9 => run_day::<Day9>(input, args.day, args.part),
-    // 10 => run_day::<Day10>(input, args.day, args.part),
-    // 11 => run_day::<Day11>(input, args.day, args.part),
-    // 12 => run_day::<Day12>(input, args.day, args.part),
-    // 13 => run_day::<Day13>(input, args.day, args.part),
-    // 14 => run_day::<Day14>(input, args.day, args.part),
-    // 15 => run_day::<Day15>(input, args.day, args.part),
-    // 16 => run_day::<Day16>(input, args.day, args.part),
-    // 17 => run_day::<Day17>(input, args.day, args.part),
-    // 18 => run_day::<Day18>(input, args.day, args.part),
-    // 19 => run_day::<Day19>(input, args.day, args.part),
-    // 20 => run_day::<Day20>(input, args.day, args.part),
-    // 21 => run_day::<Day21>(input, args.day, args.part),
-    // 22 => run_day::<Day22>(input, args.day, args.part),
-    // 23 => run_day::<Day23>(input, args.day, args.part),
-    // 24 => run_day::<Day24>(input, args.day, args.part),
-    // 25 => run_day::<Day25>(input, args.day, args.part),
+    1 => run_day::<Day1>(input, &args),
+    2 => run_day::<Day2>(input, &args),
+    3 => run_day::<Day3>(input, &args),
+    4 => run_day::<Day4>(input, &args),
+    // 5 => run_day::<Day5>(input, &args),
+    // 6 => run_day::<Day6>(input, &args),
+    // 7 => run_day::<Day7>(input, &args),
+    // 8 => run_day::<Day8>(input, &args),
+    // 9 => run_day::<Day9>(input, &args),
+    // 10 => run_day::<Day10>(input, &args),
+    // 11 => run_day::<Day11>(input, &args),
+    // 12 => run_day::<Day12>(input, &args),
+    // 13 => run_day::<Day13>(input, &args),
+    // 14 => run_day::<Day14>(input, &args),
+    // 15 => run_day::<Day15>(input, &args),
+    // 16 => run_day::<Day16>(input, &args),
+    // 17 => run_day::<Day17>(input, &args),
+    // 18 => run_day::<Day18>(input, &args),
+    // 19 => run_day::<Day19>(input, &args),
+    // 20 => run_day::<Day20>(input, &args),
+    // 21 => run_day::<Day21>(input, &args),
+    // 22 => run_day::<Day22>(input, &args),
+    // 23 => run_day::<Day23>(input, &args),
+    // 24 => run_day::<Day24>(input, &args),
+    // 25 => run_day::<Day25>(input, &args),
     _ => Err(anyhow::Error::msg("Invalid Day")),
   }
 }
