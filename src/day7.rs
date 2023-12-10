@@ -49,27 +49,6 @@ enum Card {
   JWeak = 1,
 }
 
-impl Display for Card {
-  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-    match self {
-      Self::A => f.write_char('A'),
-      Self::K => f.write_char('K'),
-      Self::Q => f.write_char('Q'),
-      Self::T => f.write_char('T'),
-      Self::J => f.write_char('J'),
-      Self::JWeak => f.write_char('J'),
-      Self::N9 => f.write_char('9'),
-      Self::N8 => f.write_char('8'),
-      Self::N7 => f.write_char('7'),
-      Self::N6 => f.write_char('6'),
-      Self::N5 => f.write_char('5'),
-      Self::N4 => f.write_char('4'),
-      Self::N3 => f.write_char('3'),
-      Self::N2 => f.write_char('2'),
-    }
-  }
-}
-
 impl Card {
   fn new(c: char, joker_weak: bool) -> Self {
     match c {
@@ -90,41 +69,11 @@ impl Card {
       _ => unreachable!(),
     }
   }
-
-  fn _eq(&self, other: &Self) -> bool {
-    let lhs = *self as usize;
-    let rhs = *other as usize;
-    let joker = Card::JWeak as usize;
-
-    if lhs == joker || rhs == joker {
-      true
-    } else {
-      lhs.eq(&rhs)
-    }
-  }
-}
-
-impl From<char> for Card {
-  fn from(c: char) -> Self {
-    Self::new(c, false)
-  }
 }
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 struct Hand {
   cards: [Card; 5],
-}
-
-impl Display for Hand {
-  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-    let [a, b, c, d, e] = &self.cards;
-
-    Display::fmt(a, f)?;
-    Display::fmt(b, f)?;
-    Display::fmt(c, f)?;
-    Display::fmt(d, f)?;
-    Display::fmt(e, f)
-  }
 }
 
 impl Hand {
@@ -153,10 +102,7 @@ impl Hand {
       counts.remove(&Card::JWeak);
     };
 
-    let mut values = counts.values().copied().collect_vec();
-
-    values.sort_unstable();
-    values.reverse();
+    let values = counts.values().sorted_unstable().rev().collect_vec();
 
     match values.as_slice() {
       [5] => 7,
@@ -196,19 +142,14 @@ impl<'a> Day<'a> for Day7<'a> {
   // Real: 253205868
   // Example: 6592
   fn part1(&mut self) -> String {
-    let mut lines = self
+    self
       .input
       .lines()
       .map(|line| line.split_once(' ').unwrap())
       .map(|(cards, bid)| (Hand::new(cards, false), bid.parse::<usize>().unwrap()))
-      .collect_vec();
-
-    lines.sort_unstable_by(|(a, _), (b, _)| a.cmp(b));
-
-    lines
-      .iter()
+      .sorted_unstable_by(|(a, _), (b, _)| a.cmp(b))
       .enumerate()
-      .map(|(index, &(_, bid))| bid * (index + 1))
+      .map(|(index, (_, bid))| bid * (index + 1))
       .sum::<usize>()
       .to_string()
   }
@@ -216,19 +157,14 @@ impl<'a> Day<'a> for Day7<'a> {
   // Real: 253907829
   // Example: 6839
   fn part2(&mut self) -> String {
-    let mut lines = self
+    self
       .input
       .lines()
       .map(|line| line.split_once(' ').unwrap())
       .map(|(cards, bid)| (Hand::new(cards, true), bid.parse::<usize>().unwrap()))
-      .collect_vec();
-
-    lines.sort_unstable_by(|(a, _), (b, _)| a.cmp(b));
-
-    lines
-      .iter()
+      .sorted_unstable_by(|(a, _), (b, _)| a.cmp(b))
       .enumerate()
-      .map(|(index, &(_, bid))| bid * (index + 1))
+      .map(|(index, (_, bid))| bid * (index + 1))
       .sum::<usize>()
       .to_string()
   }
