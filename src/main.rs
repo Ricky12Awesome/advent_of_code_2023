@@ -2,6 +2,7 @@
 #![feature(array_chunks)]
 #![feature(iter_collect_into)]
 #![feature(iter_array_chunks)]
+#![feature(slice_group_by)]
 #![allow(unused)]
 
 mod day1;
@@ -10,6 +11,7 @@ mod day3;
 mod day4;
 mod day5;
 mod day6;
+mod day7;
 
 use crate::day1::Day1;
 use crate::day2::Day2;
@@ -19,6 +21,7 @@ use clap::Parser;
 use std::time::Duration;
 use crate::day5::Day5;
 use crate::day6::Day6;
+use crate::day7::Day7;
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
@@ -60,7 +63,7 @@ pub const DEFAULT_INPUTS: &[&str] = &[
   include_str!("../inputs/4.txt"),
   include_str!("../inputs/5.txt"),
   include_str!("../inputs/6.txt"),
-  // include_str!("../inputs/7.txt"),
+  include_str!("../inputs/7.txt"),
   // include_str!("../inputs/8.txt"),
   // include_str!("../inputs/9.txt"),
   // include_str!("../inputs/10.txt"),
@@ -172,7 +175,7 @@ pub fn main() -> anyhow::Result<()> {
     4 => run_day::<Day4>(input, &args),
     5 => run_day::<Day5>(input, &args),
     6 => run_day::<Day6>(input, &args),
-    // 7 => run_day::<Day7>(input, &args),
+    7 => run_day::<Day7>(input, &args),
     // 8 => run_day::<Day8>(input, &args),
     // 9 => run_day::<Day9>(input, &args),
     // 10 => run_day::<Day10>(input, &args),
