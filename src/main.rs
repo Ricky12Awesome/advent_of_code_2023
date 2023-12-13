@@ -6,22 +6,34 @@
 #![allow(unused)]
 
 mod day1;
+mod day10;
+mod day11;
+mod day12;
+mod day13;
 mod day2;
 mod day3;
 mod day4;
 mod day5;
 mod day6;
 mod day7;
+mod day8;
+mod day9;
 
 use crate::day1::Day1;
+use crate::day10::Day10;
+use crate::day11::Day11;
+use crate::day12::Day12;
+use crate::day13::Day13;
 use crate::day2::Day2;
 use crate::day3::Day3;
 use crate::day4::Day4;
-use clap::Parser;
-use std::time::Duration;
 use crate::day5::Day5;
 use crate::day6::Day6;
 use crate::day7::Day7;
+use crate::day8::Day8;
+use crate::day9::Day9;
+use clap::Parser;
+use std::time::Duration;
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
@@ -64,12 +76,12 @@ pub const DEFAULT_INPUTS: &[&str] = &[
   include_str!("../inputs/5.txt"),
   include_str!("../inputs/6.txt"),
   include_str!("../inputs/7.txt"),
-  // include_str!("../inputs/8.txt"),
-  // include_str!("../inputs/9.txt"),
-  // include_str!("../inputs/10.txt"),
-  // include_str!("../inputs/11.txt"),
-  // include_str!("../inputs/12.txt"),
-  // include_str!("../inputs/13.txt"),
+  include_str!("../inputs/8.txt"),
+  include_str!("../inputs/9.txt"),
+  include_str!("../inputs/10.txt"),
+  include_str!("../inputs/11.txt"),
+  include_str!("../inputs/12.txt"),
+  include_str!("../inputs/13.txt"),
   // include_str!("../inputs/14.txt"),
   // include_str!("../inputs/15.txt"),
   // include_str!("../inputs/16.txt"),
@@ -176,12 +188,12 @@ pub fn main() -> anyhow::Result<()> {
     5 => run_day::<Day5>(input, &args),
     6 => run_day::<Day6>(input, &args),
     7 => run_day::<Day7>(input, &args),
-    // 8 => run_day::<Day8>(input, &args),
-    // 9 => run_day::<Day9>(input, &args),
-    // 10 => run_day::<Day10>(input, &args),
-    // 11 => run_day::<Day11>(input, &args),
-    // 12 => run_day::<Day12>(input, &args),
-    // 13 => run_day::<Day13>(input, &args),
+    8 => run_day::<Day8>(input, &args),
+    9 => run_day::<Day9>(input, &args),
+    10 => run_day::<Day10>(input, &args),
+    11 => run_day::<Day11>(input, &args),
+    12 => run_day::<Day12>(input, &args),
+    13 => run_day::<Day13>(input, &args),
     // 14 => run_day::<Day14>(input, &args),
     // 15 => run_day::<Day15>(input, &args),
     // 16 => run_day::<Day16>(input, &args),

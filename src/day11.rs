@@ -1,8 +1,10 @@
-pub struct DayX<'a> {
+use crate::Day;
+
+pub struct Day11<'a> {
   input: &'a str
 }
 
-impl <'a> Day<'a> for DayX<'a> {
+impl <'a> Day<'a> for Day11<'a> {
   fn setup(input: &'a str) -> Self {
     Self { input }
   }
