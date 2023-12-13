@@ -3,6 +3,7 @@
 #![feature(iter_collect_into)]
 #![feature(iter_array_chunks)]
 #![feature(slice_group_by)]
+#![feature(iter_map_windows)]
 #![allow(unused)]
 
 mod day1;
